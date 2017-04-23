@@ -4,12 +4,16 @@ import rebound
 from random import random, uniform, seed
 import time
 import sys
+import math
 
 def collision(reb_sim, col):
     reb_sim.contents._status = 5 # causes simulation to stop running and have flag for whether sim stopped due to collision
     return 0
 
-def run_random(sim_id, integrator="whfast", dt=0.09, maxorbs=1.e9, betamin=1., betamax=30., shadow=False, runstr=None):
+def run_random(sim_id, integrator="whfast", dt=None, maxorbs=1.e9, betamin=1., betamax=30., shadow=False, runstr=None):
+    if dt is None:
+        dt = 2.*math.sqrt(3)/100. # dt approx 3.5 % of innermost orbital period
+
     datapath = '../data/random/'
 
     a1 = 1. # All distances in units of the innermost semimajor axis (always at 1)
@@ -105,7 +109,3 @@ def run_random(sim_id, integrator="whfast", dt=0.09, maxorbs=1.e9, betamin=1., b
         sim.save(datapath+'final_conditions/'+shadowstr+'runs/fc'+runstr)
 
     return (sim.t, Eerr, time.time()-t0)
-
-#sim_id = int(sys.argv[1])
-#run_system(sim_id, save=True) # run system
-#run_system(sim_id, shadow=True, save=True) # run shadow system
