@@ -60,10 +60,11 @@ def run_random(sim_id, integrator="whfast", dt=None, maxorbs=1.e9, betamin=1., b
     #print("emin1 = {0}, emin2 = {1}, emin3 = {2}".format(10**logemin1, 10**logemin2, 10**logemin3))
     #print("minhill = {0}".format(minhill))
 
-    e1 = 10.**uniform(logemin1, logemax1)
-    e2 = 10.**uniform(logemin2, logemax2)
-    e3 = 10.**uniform(logemin3, logemax3)
-
+    emax = 0.999
+    e1 = min(10.**uniform(logemin1, logemax1), emax) # make sure ecc < 1
+    e2 = min(10.**uniform(logemin2, logemax2), emax)
+    e3 = min(10.**uniform(logemin3, logemax3), emax)
+    
     i1 = 10.**uniform(logincmin, logincmax)
     i2 = 10.**uniform(logincmin, logincmax)
     i3 = 10.**uniform(logincmin, logincmax)
